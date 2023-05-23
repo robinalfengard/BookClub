@@ -6,8 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+
+
 @Repository
 public interface BookRepository extends JpaRepository<Book, Long> {
 
-    ResponseEntity<List<Book>> getBooksByUserID(Long id);
+
+   List<Book> getBooksByUserId(Long id);
+
+
+
 }

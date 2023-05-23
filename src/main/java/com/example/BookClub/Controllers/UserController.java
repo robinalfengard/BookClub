@@ -16,8 +16,8 @@ public class UserController {
     UserRepository userRepository;
 
     @GetMapping("/list")
-    public List<User> getUsers(){
-        return userRepository.findAll();
+    public ResponseEntity<List<User>> getUsers(){
+        return ResponseEntity.ok(userRepository.findAll());
     }
 
     @PostMapping("/add")

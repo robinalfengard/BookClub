@@ -11,13 +11,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "ATTENDEE")
 public class Attendee {
-    @Column(name = "IDENTITY")
+    @Column(name = "ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @ManyToOne
-    @JoinColumn(name = "MEETING-ID")
+    @JoinColumn(name = "MEETING_ID")
     Meeting meeting;
 
     @ManyToOne

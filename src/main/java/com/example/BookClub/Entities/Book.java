@@ -16,6 +16,10 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "CHOSEN_BY_USER_ID")
+    User user;
+
     @Column(name = "TITLE")
     String title;
 
@@ -23,6 +27,11 @@ public class Book {
     String author;
 
     @Column(name = "COLLECTED_RATING")
-    String collectedRating;
+    float collectedRating;
 
+    public Book(User chosenBy, String title, String author) {
+        this.user = chosenBy;
+        this.title = title;
+        this.author = author;
+    }
 }

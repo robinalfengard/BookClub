@@ -13,7 +13,7 @@ import java.util.Date;
 @Entity
 @Table(name = "MEETING")
 public class Meeting {
-    @Column(name = "IDENTITY")
+    @Column(name = "ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

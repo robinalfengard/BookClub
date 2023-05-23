@@ -4,12 +4,10 @@ import com.example.BookClub.Entities.Book;
 import com.example.BookClub.Entities.User;
 import com.example.BookClub.Repositories.BookRepository;
 import com.example.BookClub.Repositories.UserRepository;
+import com.example.BookClub.Services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,19 +20,14 @@ public class BookController {
 
     @Autowired
     BookRepository bookRepository;
+    @Autowired
+    BookService bookService;
+
 
     @GetMapping("/user/{id}")
-    public ResponseEntity<List<Book>> getBooksByUserID(@RequestParam Long id){
-        Optional<User> user = userRepository.findById(id);
-        if (user.isPresent()){
-            return bookRepository.getBooksByUserID(id);
-        }
-        else {
-            return ResponseEntity.notFound().build();
-        }
-
-
-
+    public List<Book> getBooksByUserId(@PathVariable Long id){
+        return bookService.getBooksByUserIdService(id);
     }
+
 
 }

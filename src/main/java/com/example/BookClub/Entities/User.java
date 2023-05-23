@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "USERS")
 public class User {
 
-    @Column(name = "IDENTITY")
+    @Column(name = "ID")
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -20,4 +20,7 @@ public class User {
     @Column(name = "NAME")
     String name;
 
+    public User(String name) {
+        this.name = name;
+    }
 }
