@@ -20,7 +20,14 @@ public class User {
     @Column(name = "NAME")
     String name;
 
+    @Column(name = "IMG_URL")
+    String imgUrl;
+
     public User(String name) {
         this.name = name;
+    }
+    public User (String name, String imgUrl){
+        this.name = name;
+        this.imgUrl = imgUrl;
     }
 }
