@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
 @Table(name = "USERS")
+@CrossOrigin(origins = "http://localhost:3000")
 public class User {
 
     @Column(name = "ID")
@@ -30,4 +32,5 @@ public class User {
         this.name = name;
         this.imgUrl = imgUrl;
     }
+
 }

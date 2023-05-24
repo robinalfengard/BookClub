@@ -5,14 +5,17 @@ import com.example.BookClub.Repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserService {
 
     private final UserRepository userRepository;
+
 
     public ResponseEntity<String> deleteById(Long id) {
         User user = userRepository.findById(id)
