@@ -4,19 +4,25 @@ import { getUsers } from "../ApiService/ApiService";
 import axios from "axios";
 
 const Members=()=>{
-    const [data, setData] = useState([]);
-    const [part1, setPart1] = useState([]);
-    const [part2, setPart2] = useState([]);
+    const [userData, setData] = useState([]);
+
 
 
     useEffect(()=>{
         fetchData();
     },[]);
 
+    useEffect(() => {
+        console.log(userData); // Log the updated value of data whenever it changes
+      }, [userData]);
+    
+
     const fetchData = async () => {
         try{
-            const response = await axios.get('https://www.localhost:8080/users/list');
-            console.log(response);
+            const response = await axios.get('http://localhost:8080/users/list');
+            console.log(response.data);
+            const responseData = response.data;
+            setData(responseData);
         } catch (error){
             console.log(error);
         }
@@ -26,14 +32,17 @@ const Members=()=>{
 
 return(
     <>
-    <div className="container">
-    <MemberCard/>
-    <MemberCard/>
-    <MemberCard/>
-    <MemberCard/>
-    <MemberCard/>
-    <MemberCard/>
-    </div>
+
+    
+<div className="container">
+                {
+                    <MemberCard user={userData}/>
+
+                }
+                
+                
+   
+            </div>
 
     
     </>
