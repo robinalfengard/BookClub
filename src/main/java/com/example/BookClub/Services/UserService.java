@@ -1,5 +1,6 @@
 package com.example.BookClub.Services;
 
+import com.example.BookClub.Entities.Book;
 import com.example.BookClub.Entities.User;
 import com.example.BookClub.Repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,4 +25,13 @@ public class UserService {
         return ResponseEntity.ok( "Member with id " + id + " was successfully deleted.");
     }
 
+    public ResponseEntity<User> getUserById(String id) {
+        Optional<User> user = userRepository.findById(Long.valueOf(id));
+        return user.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    public ResponseEntity<String> getUserByName(String name) {
+        Optional<User> user = userRepository.findByName(name);
+        return user.map(value -> ResponseEntity.ok(value.getId().toString())).orElseGet(() -> ResponseEntity.notFound().build());
+    }
 }

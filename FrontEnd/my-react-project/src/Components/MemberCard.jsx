@@ -13,8 +13,6 @@ const MemberCard=({user})=>{
                 let img=item.imgUrl;
                     return(
                         <>
-                   
-
                         <div className="membercard">
                         <img src={img} alt="" />
                             <div className="bottom">

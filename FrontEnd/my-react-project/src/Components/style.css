@@ -261,3 +261,45 @@ margin: 10px;
 .inner-box-add p{
  color: rgb(28, 122, 28);
     }
+
+.meetingcard{
+    background-color: rgb(30, 31, 31);
+    border-radius: 1rem;
+    padding: 0.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+    color: antiquewhite;
+}
+
+.hidden-inputs{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    margin-bottom: 10px;
+}
+.hidden-inputs input{
+    width: 20%;
+}
+.hidden-inputs button{
+    margin-top: 20px;
+    outline: none;
+    border: none;
+    width: 20%;
+    border-radius: 5px;
+    background-color: blue;
+    color: white;
+    font-weight: bold;
+    padding: 0.3rem 0.5rem;
+    margin-top: 10px;
+}
+.hidden-inputs button :hover{
+    cursor:pointer;
+    transform: scale(0.9);
+}
+
+
+
+
