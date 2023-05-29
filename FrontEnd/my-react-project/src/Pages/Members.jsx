@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import MemberCard from "../Components/MemberCard";
-import { getUsers } from "../ApiService/ApiService";
 import axios from "axios";
 import NewUserModal from "../Components/NewUserModal";
 
