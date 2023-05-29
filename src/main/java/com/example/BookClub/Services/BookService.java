@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Service
@@ -32,4 +33,19 @@ public class BookService {
     }
 
 
+    public ResponseEntity<String> saveBookByBody(Book book) {
+        Long userId = Long.parseLong(book.getUserIdForConstructor());
+        User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
+        Book newBook = new Book(user, book.getTitle(), book.getAuthor(), book.getThumb());
+        bookRepository.save(newBook);
+        return ResponseEntity.ok("Record saved successfully");
+
+    }
+
+
+    public ResponseEntity<Book> getBookById(Long id) {
+        Optional<Book> book = bookRepository.findById(id);
+        return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+
+    }
 }

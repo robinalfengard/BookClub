@@ -5,6 +5,7 @@ import com.example.BookClub.Entities.User;
 import com.example.BookClub.Repositories.BookRepository;
 import com.example.BookClub.Repositories.UserRepository;
 import com.example.BookClub.Services.BookService;
+import org.apache.logging.log4j.util.PerformanceSensitive;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,20 @@ public class BookController {
     @GetMapping("/user/{id}")
     public List<Book> getBooksByUserId(@PathVariable Long id){
         return bookService.getBooksByUserIdService(id);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Book> getBook(@PathVariable Long id){return bookService.getBookById(id);}
+
+    @GetMapping("/all")
+    public List<Book> getAll(){
+        return bookRepository.findAll();
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<String> addBook(@RequestBody Book book){
+        bookService.saveBookByBody(book);
+        return ResponseEntity.ok("Book Successfully Saved");
     }
 
 

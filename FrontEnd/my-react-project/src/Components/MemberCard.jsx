@@ -6,12 +6,15 @@ const MemberCard=({user})=>{
         
     return(
         <>
+
         {
             user.map((item)=>{
                 let name=item.name;
                 let img=item.imgUrl;
                     return(
                         <>
+                   
+
                         <div className="membercard">
                         <img src={img} alt="" />
                             <div className="bottom">

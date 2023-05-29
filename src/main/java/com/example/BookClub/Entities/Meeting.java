@@ -18,10 +18,19 @@ public class Meeting {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+
     @ManyToOne
     @JoinColumn(name = "BOOK_ID")
     Book book;
 
+    @Transient
+    String bookIdForConstructor;
+
     String date;
 
+
+    public Meeting(Book book, String date) {
+        this.book = book;
+        this.date = date;
+    }
 }

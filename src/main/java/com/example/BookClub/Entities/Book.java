@@ -20,18 +20,27 @@ public class Book {
     @JoinColumn(name = "CHOSEN_BY_USER_ID")
     User user;
 
+    @Transient
+    String userIdForConstructor;
+
     @Column(name = "TITLE")
     String title;
 
     @Column(name = "AUTHOR")
     String author;
 
+    @Column(name = "THUMB")
+    String thumb;
+
     @Column(name = "COLLECTED_RATING")
     float collectedRating;
 
-    public Book(User chosenBy, String title, String author) {
+    public Book(User chosenBy, String title, String author, String thumb) {
         this.user = chosenBy;
         this.title = title;
         this.author = author;
+        this.thumb = thumb;
     }
+
+
 }
