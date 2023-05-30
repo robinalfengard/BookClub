@@ -1,44 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import MeetingCard from "../Components/MeetingCard";
-import { useState, useEffect } from "react";
 import axios from "axios";
 
-const Meetings = () =>{
-    const [userData, setData] = useState([]);
+const Meetings = () => {
+  const [userData, setUserData] = useState([]);
 
+  useEffect(() => {
+    console.log("Component rendered");
+    fetchData();
+  }, []);
 
-    useEffect(()=>{
-        fetchData();
-    },[]);
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/meeting/list");
+      const responseData = response.data;
+      setUserData(responseData);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
-    useEffect(() => {
-        console.log(userData); // Log the updated value of data whenever it changes
-      }, [userData]);
-    
+  return (
+    <>
+      <div className="container">
+        {userData.length > 0 && <MeetingCard meeting={userData} />}
+      </div>
+    </>
+  );
+};
 
-    const fetchData = async () => {
-        try{
-            const response = await axios.get('http://localhost:8080/meeting/list');
-            console.log(response.data);
-            const responseData = response.data;
-            setData(responseData);
-        } catch (error){
-            console.log(error);
-        }
-    };
-   
-
-    return(
-        <>
-        <div className="container">
-        {
-                    <MeetingCard meeting={userData}/>
-
-                }
-            </div>
-        </>
-
-    )
-
-} 
 export default Meetings;
