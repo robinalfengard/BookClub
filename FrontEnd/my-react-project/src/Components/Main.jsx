@@ -22,7 +22,7 @@ const Main=()=>{
     const searchBook=(event)=>{
         if(event.key==="Enter")
         {
-            axios.get('https://www.googleapis.com/books/v1/volumes?q='+search+'&key=AIzaSyCsr8JfGWq9Mf6icTSgS9muSEzJKCPaSUQ'+'&maxResults=12')
+            axios.get('https://www.googleapis.com/books/v1/volumes?q='+search+'&key=#GoogleKey'+'&maxResults=12')
             .then(res=>setData(res.data.items))
             .catch(err=>console.log(err))
         }
