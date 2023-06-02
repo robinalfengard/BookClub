@@ -1,40 +1,46 @@
-import { useState, useEffect } from "react";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const MeetingCard = ({ meeting }) => {
-  const [user, setUser] = useState({});
+  const [bookImgUrls, setBookImgUrls] = useState({});
 
   useEffect(() => {
-    fetchUserData();
+    fetchImgUrls();
   }, []);
 
-  const fetchUserData = async () => {
+  const fetchImgUrl = async (bookId) => {
     try {
-      const userId = meeting.map((item) => item.book.user.id);
-      const response = await axios.get(`http://localhost:8080/users/${userId}`);
-      const userData = response.data;
-      setUser(userData);
+      const response = await axios.get(`http://localhost:8080/book/img/${bookId}`);
+      const imgUrl = response.data;
+      setBookImgUrls((prevUrls) => ({ ...prevUrls, [bookId]: imgUrl }));
     } catch (error) {
       console.log(error);
     }
   };
 
+  const fetchImgUrls = () => {
+    meeting.forEach((item) => {
+      const bookId = item.bookIdFromApi;
+      fetchImgUrl(bookId);
+    });
+  };
+  
+
   return (
     <>
       {meeting.map((item) => {
         const date = item.date;
-        const img = item.book.thumb;
-        const userPickerId = item.book.user.id;
+        const bookId = item.bookIdFromApi;
+        const img = bookImgUrls[bookId];
+        const userPickerName = item.host ? item.host.name : "";
+        const userPickerId = item.host ? item.host.id : "";
         
-        
-
         return (
           <div className="meetingcard" key={userPickerId}>
-            <img src={img} alt="" />
+            {img && <img src={img} alt="" />}
             <div className="bottom">
               <h3 className="title">Datum: {date}</h3>
-              {user.name && <h3 className="title">Who Picked: {user.name} </h3>}
+              {userPickerId && <h3 className="title">Who Picked: {userPickerName} </h3>}
             </div>
           </div>
         );

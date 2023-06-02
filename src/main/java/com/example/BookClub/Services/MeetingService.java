@@ -5,11 +5,13 @@ import com.example.BookClub.Entities.Meeting;
 import com.example.BookClub.Entities.User;
 import com.example.BookClub.Repositories.BookRepository;
 import com.example.BookClub.Repositories.MeetingRepository;
+import com.example.BookClub.Repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 @Service
 public class MeetingService {
@@ -19,14 +21,25 @@ public class MeetingService {
 
     @Autowired
     MeetingRepository meetingRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
-    public void saveMeetingByBody(Meeting meeting) {
-        Long bookId = Long.parseLong(meeting.getBookIdForConstructor());
-        Book book = bookRepository.findById(bookId).orElseThrow(() -> new NoSuchElementException("Book not found"));
-        Meeting newMeeting = new Meeting(book, meeting.getDate());
-        meetingRepository.save(newMeeting);
-        ResponseEntity.ok("Meeting successfully saved");
+    public ResponseEntity<String> saveMeetingByBody(Meeting meeting) {
+        Long userId = Long.valueOf(meeting.getUserIdForConstructor());
+        System.out.println(userId);
+        Book book = bookRepository.findBookByIdFromApi(meeting.getBookIdFromApi());
+        Optional<User> optionalUser = userRepository.findById(userId);
+        if (optionalUser.isPresent()) {
+            User host = optionalUser.get();
+            System.out.println(host);
+            Meeting newMeeting = new Meeting(host, book.getIdFromApi(), meeting.getDate());
+            System.out.println(newMeeting.toString());
+            meetingRepository.save(newMeeting);
+           return ResponseEntity.ok("Meeting successfully saved");
+        } else{
+            return ResponseEntity.notFound().build();
+        }
 
     }
 

@@ -32,15 +32,36 @@ public class Book {
     @Column(name = "THUMB")
     String thumb;
 
+    @Column(name = "ID_FROM_API")
+    String idFromApi;
+
     @Column(name = "COLLECTED_RATING")
     float collectedRating;
 
-    public Book(User chosenBy, String title, String author, String thumb) {
+    public Book(User chosenBy, String title, String author, String thumb, String idFromApi) {
         this.user = chosenBy;
         this.title = title;
         this.author = author;
         this.thumb = thumb;
+        this.idFromApi = idFromApi;
     }
+
+    public Book(String userIdForConstructor, String title, String author, String thumb) {
+        this.userIdForConstructor = userIdForConstructor;
+        this.title = title;
+        this.author = author;
+        this.thumb = thumb;
+
+
+    }
+
+/*    public Book(User chosenBy, String title, String author, String thumb, String idFromApi) {
+        this.user = chosenBy;
+        this.title = title;
+        this.author = author;
+        this.thumb = thumb;
+        this.idFromApi = idFromApi;
+    }*/
 
 
 }

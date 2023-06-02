@@ -1,55 +1,125 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const Modal = ({ show, item, onClose }) => {
   const [book, setBook] = useState({
-    userId: "",
+    userIdForConstructor: "",
     title: "",
     author: "",
     thumb: "",
+    idFromApi: ""
   });
 
-  const [showInputs, setShowInputs] = useState(false); // State variable for showing/hiding inputs
-  
+  const [meeting, setMeeting] = useState({
+    userIdForConstructor: "",
+    date: "",
+    bookIdFromApi: "",
+  });
 
-  const fetchData = async (userName) => {
+  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState("");
+
+  useEffect(() => {
+    fetchUserData();
+  }, []);
+
+  const fetchUserData = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/users/${userName}`);
+      const response = await axios.get(`http://localhost:8080/users/list`);
       const userData = response.data;
-      setBook((prevBook) => ({
-        ...prevBook,
-        userId: userData.id,
-      }));
+      setUsers(userData);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const [successMessage, setSuccessMessage] = useState("");
-
-  const handleClick = async (e) => {
-    setSuccessMessage("Book created successfully!");
-    await axios.post("http://localhost:8080/book/add", book);
-    e.preventDefault();
+  const handleClickAddBook = async () => {
+    console.log(book);
+    try {
+      console.log(book)
+      await axios.post("http://localhost:8080/book/add", book);
+      console.log("Book added successfully");
+      // Do additional tasks after the book is added
+    } catch (error) {
+      console.log("Error adding book:", error);
+      // Handle error if the book couldn't be added
+    }
+  };
+  
+  const handleClickAddMeeting = async () => {
+    console.log(meeting);
+    try {
+      const updatedMeeting = {
+        ...meeting,
+        bookIdFromApi: item.id, // Set the bookIdFromApi property to item.id
+      };
+  
+      await axios.post("http://localhost:8080/meeting/add", updatedMeeting);
+      console.log("Meeting added successfully");
+      // Do additional tasks after the meeting is added
+    } catch (error) {
+      console.log("Error adding meeting:", error);
+      // Handle error if the meeting couldn't be added
+    }
   };
 
-  if (!show) {
+
+
+  const handleUserChange = (e) => {
+    setSelectedUser(e.target.value);
+  };
+
+  useEffect(() => {
+    if (item && item.volumeInfo) {
+      const { title, authors, imageLinks } = item.volumeInfo;
+      setBook((prevBook) => ({
+        ...prevBook,
+        title,
+        author: authors ? authors.join(", ") : "",
+        thumb: imageLinks && imageLinks.smallThumbnail ? imageLinks.smallThumbnail : "",
+
+      }));
+    }
+  }, [item]);
+
+  
+  useEffect(() => {
+    if (item && item.id) {
+      const { id } = item;
+      setBook((prevBook) => ({
+        ...prevBook,
+        idFromApi: id,
+      }));
+    }
+  }, [item]);
+
+  useEffect(() => {
+    if (item && item.id) {
+      const { id } = item;
+      setMeeting((prevMeeting) => ({
+        ...prevMeeting,
+        idFromApi: id,
+      }));
+    }
+  }, [item]);
+
+  useEffect(() => {
+    setBook((prevBook) => ({
+      ...prevBook,
+      userIdForConstructor: selectedUser,
+    }));
+    setMeeting((prevMeeting) => ({
+      ...prevMeeting,
+      userIdForConstructor: selectedUser,
+    }));
+  }, [selectedUser]);
+
+  if (!show || !item || !item.volumeInfo) {
     return null;
   }
 
-  let thumbnail = item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.smallThumbnail;
-  let authors = item.volumeInfo.authors;
-  let title = item.volumeInfo.title;
-  let pages = item.volumeInfo.pageCount;
-
-  book.title = title;
-  book.author = authors;
-  book.thumb = thumbnail;
-
-  const handleCreateMeetingClick = () => {
-    setShowInputs(true); // Show the inputs when the button is clicked
-    fetchData("username"); // Fetch data here or update the function as needed
-  };
+  const { title, authors, pageCount, description, previewLink } = item.volumeInfo;
+  const thumbnail = book.thumb;
 
   return (
     <>
@@ -63,32 +133,39 @@ const Modal = ({ show, item, onClose }) => {
             <div className="info">
               <h2>{title}</h2>
               <h3>{authors}</h3>
-              <h5>{pages} pages</h5>
-              <a href={item.volumeInfo.previewLink}>
+              <h5>{pageCount} pages</h5>
+              <a href={previewLink}>
                 <button>More</button>
               </a>
               <br />
               <br />
-              <button className="" onClick={handleCreateMeetingClick}>
-              Create Book Club Meeting With This Book?
-            </button>
             </div>
-     
           </div>
-
-          <h4 className="description">{item.volumeInfo.description}</h4>
-        
-          {showInputs && ( // Render the inputs if showInputs is true
-            <div className="hidden-inputs">
-              <h5>Who will host this Book Club Meeting?</h5>
-              <input title="Host" name="Host" />
-
-              <h5>On Which Date? (xxxx-xx-xx)</h5>
-              <input title="Date" name="Date" />
-
-              <button>Save Book Club Meeting</button>
-            </div>
-          )}
+          <h4 className="description">{description}</h4>
+          <div className="bottom-book">
+     
+            <p>Who will host this Book Club Meeting?</p>
+            <select name="host" id="host" onChange={handleUserChange}>
+              {users.map((user) => (
+                <option key={user.id} value={user.id}>
+                  {user.name}
+                </option>
+              ))}
+            </select>
+            <p>On Which Date? (xxxx-xx-xx)</p>
+            <input
+              title="Date"
+              name="Date"
+              value={meeting.date}
+              onChange={(e) => setMeeting((prevMeeting) => ({ ...prevMeeting, date: e.target.value }))}
+            />
+                 <button className="bottom-button" onClick={handleClickAddBook}>
+              Add Book
+            </button>
+            <button className="bottom-button" onClick={handleClickAddMeeting}>
+              Create Meeting
+            </button>
+          </div>
         </div>
       </div>
     </>

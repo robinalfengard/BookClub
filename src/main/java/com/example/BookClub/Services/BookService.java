@@ -36,7 +36,7 @@ public class BookService {
     public ResponseEntity<String> saveBookByBody(Book book) {
         Long userId = Long.parseLong(book.getUserIdForConstructor());
         User user = userRepository.findById(userId).orElseThrow(() -> new NoSuchElementException("User not found"));
-        Book newBook = new Book(user, book.getTitle(), book.getAuthor(), book.getThumb());
+        Book newBook = new Book(user, book.getTitle(), book.getAuthor(), book.getThumb(), book.getIdFromApi());
         bookRepository.save(newBook);
         return ResponseEntity.ok("Record saved successfully");
 
@@ -48,4 +48,15 @@ public class BookService {
         return book.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 
     }
+
+    public String findThumbById(String bookIdFromApi) {
+        Book book = bookRepository.findBookByIdFromApi(bookIdFromApi);
+        if (book == null) {
+            return "Book with that id not found";
+        }
+        return book.getThumb();
+    }
+
+
+
 }

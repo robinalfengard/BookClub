@@ -17,7 +17,7 @@ return (
 <h2 className="meetings">Meetings</h2>
 </a>
 <a href="/findbook">
-<h2 className="findbook">Search for Book</h2>
+<h2 className="findbook">Create A Meeting</h2>
 </a>
 <a href="/members">
 <h2 className="members">Members</h2>

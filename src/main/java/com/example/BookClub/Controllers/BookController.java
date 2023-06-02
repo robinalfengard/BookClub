@@ -34,6 +34,12 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBook(@PathVariable Long id){return bookService.getBookById(id);}
 
+    @GetMapping("/img/{bookId}")
+    public String getImgUrl(@PathVariable String bookId) {
+       return bookService.findThumbById(bookId);
+
+    }
+
     @GetMapping("/all")
     public List<Book> getAll(){
         return bookRepository.findAll();
@@ -44,6 +50,10 @@ public class BookController {
         bookService.saveBookByBody(book);
         return ResponseEntity.ok("Book Successfully Saved");
     }
+
+
+
+
 
 
 }

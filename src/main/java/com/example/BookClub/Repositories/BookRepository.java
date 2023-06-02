@@ -15,5 +15,5 @@ public interface BookRepository extends JpaRepository<Book, Long> {
    List<Book> getBooksByUserId(Long id);
 
 
-
+   Book findBookByIdFromApi(String idFromApi);
 }
