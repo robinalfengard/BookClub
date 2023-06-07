@@ -23,7 +23,7 @@ const Main=()=>{
         if(event.key==="Enter")
         {   
             //INSERT google api key where #GoogleKey is printed below
-            axios.get('https://www.googleapis.com/books/v1/volumes?q='+search+'&key=#GoogleKey'+'&maxResults=12')
+            axios.get()
             .then(res=>setData(res.data.items))
             .catch(err=>console.log(err))
         }
