@@ -16,8 +16,9 @@ const Card=({book})=>{
                 let thumbnail=item.volumeInfo.imageLinks && item.volumeInfo.imageLinks.smallThumbnail;
                 let authors=item.volumeInfo.authors;
                 let title=item.volumeInfo.title;
-                if(thumbnail!= undefined)
-                {
+                thumbnail = thumbnail || "https://media.istockphoto.com/id/628925698/sv/vektor/pile-of-hardcover-books.jpg?s=612x612&w=0&k=20&c=GDniN4t95S7ArNnUK7RAPc446x2TPQFBx9F26vJrPls=";
+
+                 {
                     return(
                         <>
                         <div className="card" onClick={()=>{setShow(true); setItem(item)}}>

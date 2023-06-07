@@ -34,6 +34,9 @@ public class BookController {
     @GetMapping("/{id}")
     public ResponseEntity<Book> getBook(@PathVariable Long id){return bookService.getBookById(id);}
 
+    @GetMapping("/id/{idFromApi}")
+    public ResponseEntity<Book> getBookByApi(@PathVariable String idFromApi){return bookService.getBookByIdFromApi(idFromApi);}
+
     @GetMapping("/img/{bookId}")
     public String getImgUrl(@PathVariable String bookId) {
        return bookService.findThumbById(bookId);

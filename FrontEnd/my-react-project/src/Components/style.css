@@ -271,6 +271,12 @@ margin: 10px;
     flex-direction: column;
     margin: 15px;
     color: antiquewhite;
+    align-items: center;
+}
+.meetingcard img{
+    width: 250px;
+    height: 350px;
+
 }
 .bottom-book{
     display: flex;
@@ -292,8 +298,19 @@ margin: 10px;
 .bottom-button:hover {
     transform: scale(0.9);
     cursor: pointer;
-  }
-  
+}
+.discussion{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+.discussion h3{
+    color:antiquewhite;
+}
+
+
+
 
 
 

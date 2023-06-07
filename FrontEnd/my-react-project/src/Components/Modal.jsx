@@ -119,7 +119,9 @@ const Modal = ({ show, item, onClose }) => {
   }
 
   const { title, authors, pageCount, description, previewLink } = item.volumeInfo;
-  const thumbnail = book.thumb;
+  let thumbnail = book.thumb;
+  thumbnail = thumbnail || "https://media.istockphoto.com/id/628925698/sv/vektor/pile-of-hardcover-books.jpg?s=612x612&w=0&k=20&c=GDniN4t95S7ArNnUK7RAPc446x2TPQFBx9F26vJrPls=";
+
 
   return (
     <>
@@ -142,8 +144,11 @@ const Modal = ({ show, item, onClose }) => {
             </div>
           </div>
           <h4 className="description">{description}</h4>
+
           <div className="bottom-book">
-     
+
+          
+       
             <p>Who will host this Book Club Meeting?</p>
             <select name="host" id="host" onChange={handleUserChange}>
               {users.map((user) => (
@@ -152,6 +157,9 @@ const Modal = ({ show, item, onClose }) => {
                 </option>
               ))}
             </select>
+            <button className="bottom-button" onClick={handleClickAddBook}>
+              Confirm Book
+            </button>
             <p>On Which Date? (xxxx-xx-xx)</p>
             <input
               title="Date"
@@ -159,9 +167,7 @@ const Modal = ({ show, item, onClose }) => {
               value={meeting.date}
               onChange={(e) => setMeeting((prevMeeting) => ({ ...prevMeeting, date: e.target.value }))}
             />
-                 <button className="bottom-button" onClick={handleClickAddBook}>
-              Add Book
-            </button>
+            
             <button className="bottom-button" onClick={handleClickAddMeeting}>
               Create Meeting
             </button>

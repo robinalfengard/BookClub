@@ -58,5 +58,11 @@ public class BookService {
     }
 
 
-
+    public ResponseEntity<Book> getBookByIdFromApi(String idFromApi) {
+        Book book = bookRepository.findBookByIdFromApi(idFromApi);
+        if (book == null){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(book);
+    }
 }
