@@ -59,16 +59,15 @@ public class BookService {
 
 
     public ResponseEntity<Book> getBookByIdFromApi(String idFromApi) {
-        Book book = bookRepository.findBookByIdFromApi(idFromApi);
-        if (book == null){
-            return ResponseEntity.notFound().build();
+       Optional<Book> optBook = Optional.ofNullable(bookRepository.findBookByIdFromApi(idFromApi));
+        if (optBook.isPresent()){
+            return ResponseEntity.ok(bookRepository.findBookByIdFromApi(idFromApi));
         }
-        return ResponseEntity.ok(book);
+        return ResponseEntity.notFound().build();
     }
 
     public ResponseEntity<Boolean> isPresent(String bookIdFromApi) {
         Book book = bookRepository.findBookByIdFromApi(bookIdFromApi);
-        System.out.println(book);
         if (book == null) {
             return ResponseEntity.ok(false);
         }

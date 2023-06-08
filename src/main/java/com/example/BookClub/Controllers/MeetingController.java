@@ -34,6 +34,11 @@ public class MeetingController {
             return ResponseEntity.ok("Meeting save successfully");
         }
 
+    @DeleteMapping("/{id}")
+    public String deleteMeeting(@PathVariable Long id){
+        meetingRepository.deleteById(id);
+        return "Meeting with id" + id + "deleted";
+    }
 
 
 }
