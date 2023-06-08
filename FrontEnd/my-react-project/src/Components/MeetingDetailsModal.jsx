@@ -5,7 +5,6 @@ import axios from "axios";
 const MeetingDetailsModal = ({ book, onClose }) => {
     const[show, setShow]=useState(false);
     const[bookItem, setItem]=useState();
-    console.log(book.title);
     let title = book.title
     let img = book.thumb
     img = img ||"https://media.istockphoto.com/id/628925698/sv/vektor/pile-of-hardcover-books.jpg?s=612x612&w=0&k=20&c=GDniN4t95S7ArNnUK7RAPc446x2TPQFBx9F26vJrPls=";
