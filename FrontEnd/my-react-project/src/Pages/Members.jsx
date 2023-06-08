@@ -13,14 +13,13 @@ const Members=()=>{
     },[]);
 
     useEffect(() => {
-        console.log(userData); // Log the updated value of data whenever it changes
       }, [userData]);
     
 
     const fetchData = async () => {
         try{
             const response = await axios.get('http://localhost:8080/users/list');
-            console.log(response.data);
+            
             const responseData = response.data;
             setData(responseData);
         } catch (error){
