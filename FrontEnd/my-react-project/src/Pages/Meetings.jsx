@@ -4,6 +4,7 @@ import axios from "axios";
 
 const Meetings = () => {
   const [userData, setUserData] = useState([]);
+  
 
   useEffect(() => {
     console.log("Component rendered");
@@ -19,6 +20,8 @@ const Meetings = () => {
       console.log(error);
     }
   };
+
+
 
   return (
     <>

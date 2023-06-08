@@ -49,13 +49,13 @@ public class BookService {
 
     }
 
-    public String findThumbById(String bookIdFromApi) {
+/*    public String findThumbById(String bookIdFromApi) {
         Book book = bookRepository.findBookByIdFromApi(bookIdFromApi);
         if (book == null) {
             return "Book with that id not found";
         }
         return book.getThumb();
-    }
+    }*/
 
 
     public ResponseEntity<Book> getBookByIdFromApi(String idFromApi) {
@@ -64,5 +64,17 @@ public class BookService {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(book);
+    }
+
+    public ResponseEntity<Boolean> isPresent(String bookIdFromApi) {
+        Book book = bookRepository.findBookByIdFromApi(bookIdFromApi);
+        System.out.println(book);
+        if (book == null) {
+            return ResponseEntity.ok(false);
+        }
+        else {
+            return ResponseEntity.ok(true);
+        }
+
     }
 }

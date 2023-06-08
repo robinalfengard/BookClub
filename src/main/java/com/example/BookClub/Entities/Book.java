@@ -51,9 +51,9 @@ public class Book {
         this.title = title;
         this.author = author;
         this.thumb = thumb;
-
-
     }
+
+
 
 /*    public Book(User chosenBy, String title, String author, String thumb, String idFromApi) {
         this.user = chosenBy;

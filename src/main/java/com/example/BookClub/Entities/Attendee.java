@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Entity
@@ -20,9 +19,26 @@ public class Attendee {
     @JoinColumn(name = "MEETING_ID")
     Meeting meeting;
 
+    @Transient
+    String userIdForConstructor;
+
+
+    @Transient
+    String meetingIdForConstructor;
+
     @ManyToOne
     @JoinColumn(name = "USER_ID")
     User user;
 
 
+    // Constructor for converting JSON from FE
+    public Attendee(String meetingIdForConstructor, String userIdForConstructor) {
+        this.meetingIdForConstructor = meetingIdForConstructor;
+        this.userIdForConstructor = userIdForConstructor;
+    }
+
+    public Attendee(Meeting meeting, User user) {
+        this.meeting = meeting;
+        this.user = user;
+    }
 }

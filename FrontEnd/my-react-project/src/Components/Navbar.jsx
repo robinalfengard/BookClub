@@ -22,9 +22,7 @@ return (
 <a href="/members">
 <h2 className="members">Members</h2>
 </a>
-<a href="/atmeeting">
-<h2 className="atmeeting">At The Meeting</h2>
-</a>
+
 </div>
 </div>
 )

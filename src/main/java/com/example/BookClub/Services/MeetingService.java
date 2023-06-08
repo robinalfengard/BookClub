@@ -25,6 +25,8 @@ public class MeetingService {
     private UserRepository userRepository;
 
 
+
+
     public ResponseEntity<String> saveMeetingByBody(Meeting meeting) {
         Long userId = Long.valueOf(meeting.getUserIdForConstructor());
         System.out.println(userId);
@@ -34,7 +36,6 @@ public class MeetingService {
             User host = optionalUser.get();
             System.out.println(host);
             Meeting newMeeting = new Meeting(host, book.getIdFromApi(), meeting.getDate());
-            System.out.println(newMeeting.toString());
             meetingRepository.save(newMeeting);
            return ResponseEntity.ok("Meeting successfully saved");
         } else{
@@ -44,6 +45,18 @@ public class MeetingService {
     }
 
 
+    public ResponseEntity<String> getMeetingByBookIdFromApi(String bookIdFromApi) {
+        Book book = bookRepository.findBookByIdFromApi(bookIdFromApi);
+        if (book != null) {
+            Meeting meeting = meetingRepository.findMeetingByBookIdFromApi(book.getIdFromApi());
+            if (meeting != null){
+                return ResponseEntity.ok(meeting.getId().toString());
+            }
+        }
+            // Handle the case when the book is not found
+        return ResponseEntity.notFound().build();
+
+    }
 
 
 }

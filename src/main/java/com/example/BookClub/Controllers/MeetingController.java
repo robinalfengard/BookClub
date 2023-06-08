@@ -23,6 +23,11 @@ public class MeetingController {
         return ResponseEntity.ok(meetingRepository.findAll());
     }
 
+    @GetMapping("/{bookIdFromApi}")
+    public ResponseEntity<String> getMeetingByBookIdFromApi(@PathVariable String bookIdFromApi){
+        return meetingService.getMeetingByBookIdFromApi(bookIdFromApi);
+    }
+
     @PostMapping("/add")
         public ResponseEntity<String> addMeeting(@RequestBody Meeting meeting){
             meetingService.saveMeetingByBody(meeting);

@@ -16,12 +16,25 @@ const Modal = ({ show, item, onClose }) => {
     bookIdFromApi: "",
   });
 
+  const [host, setHost] = useState({
+    userIdForConstructor: book.userIdForConstructor,
+    meetingIdForConstructor: meeting,
+  });
+
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
+  const [isPresent, setIsPresent] = useState(false);
 
   useEffect(() => {
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    if (book.idFromApi) {
+      checkIfBookIsPresent(book.idFromApi);
+      console.log(book.idFromApi);
+    }
+  }, [book.idFromApi]);
 
   const fetchUserData = async () => {
     try {
@@ -36,16 +49,37 @@ const Modal = ({ show, item, onClose }) => {
   const handleClickAddBook = async () => {
     console.log(book);
     try {
-      console.log(book)
-      await axios.post("http://localhost:8080/book/add", book);
-      console.log("Book added successfully");
-      // Do additional tasks after the book is added
+      const isPresent = await checkIfBookIsPresent(book.idFromApi);
+      if (isPresent) {
+        console.log(isPresent)
+        console.log("Book already exists");
+        // Handle the case where the book already exists
+      } else {
+        console.log(isPresent)
+        await axios.post("http://localhost:8080/book/add", book);
+        console.log("Book added successfully");
+        // Do additional tasks after the book is added
+      }
     } catch (error) {
       console.log("Error adding book:", error);
       // Handle error if the book couldn't be added
     }
   };
+
+  const checkIfBookIsPresent = async (bookIdFromApi) => {
+    try {
+      const response = await axios.get(`http://localhost:8080/book/isPresent/${bookIdFromApi}`);
+      const result = response.data;
+      console.log(result);
+      setIsPresent(result);
+      return result; // Return true if the book exists, false otherwise
+    } catch (error) {
+      console.log(error);
+      return false; // Return false if an error occurs while checking the book
+    }
+  };
   
+
   const handleClickAddMeeting = async () => {
     console.log(meeting);
     try {
@@ -53,17 +87,16 @@ const Modal = ({ show, item, onClose }) => {
         ...meeting,
         bookIdFromApi: item.id, // Set the bookIdFromApi property to item.id
       };
-  
+
       await axios.post("http://localhost:8080/meeting/add", updatedMeeting);
       console.log("Meeting added successfully");
-      // Do additional tasks after the meeting is added
+
+      await axios.post("http://localhost:8080/attendee/add", host);
     } catch (error) {
       console.log("Error adding meeting:", error);
       // Handle error if the meeting couldn't be added
     }
   };
-
-
 
   const handleUserChange = (e) => {
     setSelectedUser(e.target.value);
@@ -77,12 +110,10 @@ const Modal = ({ show, item, onClose }) => {
         title,
         author: authors ? authors.join(", ") : "",
         thumb: imageLinks && imageLinks.smallThumbnail ? imageLinks.smallThumbnail : "",
-
       }));
     }
   }, [item]);
 
-  
   useEffect(() => {
     if (item && item.id) {
       const { id } = item;
@@ -98,7 +129,7 @@ const Modal = ({ show, item, onClose }) => {
       const { id } = item;
       setMeeting((prevMeeting) => ({
         ...prevMeeting,
-        idFromApi: id,
+        bookIdFromApi: id,
       }));
     }
   }, [item]);
@@ -120,8 +151,9 @@ const Modal = ({ show, item, onClose }) => {
 
   const { title, authors, pageCount, description, previewLink } = item.volumeInfo;
   let thumbnail = book.thumb;
-  thumbnail = thumbnail || "https://media.istockphoto.com/id/628925698/sv/vektor/pile-of-hardcover-books.jpg?s=612x612&w=0&k=20&c=GDniN4t95S7ArNnUK7RAPc446x2TPQFBx9F26vJrPls=";
-
+  thumbnail =
+    thumbnail ||
+    "https://media.istockphoto.com/id/628925698/sv/vektor/pile-of-hardcover-books.jpg?s=612x612&w=0&k=20&c=GDniN4t95S7ArNnUK7RAPc446x2TPQFBx9F26vJrPls=";
 
   return (
     <>
@@ -145,33 +177,38 @@ const Modal = ({ show, item, onClose }) => {
           </div>
           <h4 className="description">{description}</h4>
 
-          <div className="bottom-book">
+{isPresent ? (
+  <div className="bottom-book">
+    <p>The book has already been read.</p>
+  </div>
+) : (
+  <div className="bottom-book">
+    <p>Who will host this Book Club Meeting?</p>
+    <select name="host" id="host" onChange={handleUserChange}>
+      {users.map((user) => (
+        <option key={user.id} value={user.id}>
+          {user.name}
+        </option>
+      ))}
+    </select>
+    <button className="bottom-button" onClick={handleClickAddBook}>
+      Confirm Book
+    </button>
+    <p>On Which Date? (xxxx-xx-xx)</p>
+    <input
+      title="Date"
+      name="Date"
+      value={meeting.date}
+      onChange={(e) =>
+        setMeeting((prevMeeting) => ({ ...prevMeeting, date: e.target.value }))
+      }
+    />
+    <button className="bottom-button" onClick={handleClickAddMeeting}>
+      Create Meeting
+    </button>
+  </div>
+)}
 
-          
-       
-            <p>Who will host this Book Club Meeting?</p>
-            <select name="host" id="host" onChange={handleUserChange}>
-              {users.map((user) => (
-                <option key={user.id} value={user.id}>
-                  {user.name}
-                </option>
-              ))}
-            </select>
-            <button className="bottom-button" onClick={handleClickAddBook}>
-              Confirm Book
-            </button>
-            <p>On Which Date? (xxxx-xx-xx)</p>
-            <input
-              title="Date"
-              name="Date"
-              value={meeting.date}
-              onChange={(e) => setMeeting((prevMeeting) => ({ ...prevMeeting, date: e.target.value }))}
-            />
-            
-            <button className="bottom-button" onClick={handleClickAddMeeting}>
-              Create Meeting
-            </button>
-          </div>
         </div>
       </div>
     </>

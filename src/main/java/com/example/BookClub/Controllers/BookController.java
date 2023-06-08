@@ -27,36 +27,41 @@ public class BookController {
 
 
     @GetMapping("/user/{id}")
-    public List<Book> getBooksByUserId(@PathVariable Long id){
+    public List<Book> getBooksByUserId(@PathVariable Long id) {
         return bookService.getBooksByUserIdService(id);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Book> getBook(@PathVariable Long id){return bookService.getBookById(id);}
-
-    @GetMapping("/id/{idFromApi}")
-    public ResponseEntity<Book> getBookByApi(@PathVariable String idFromApi){return bookService.getBookByIdFromApi(idFromApi);}
-
-    @GetMapping("/img/{bookId}")
-    public String getImgUrl(@PathVariable String bookId) {
-       return bookService.findThumbById(bookId);
-
+    public ResponseEntity<Book> getBook(@PathVariable Long id) {
+        return bookService.getBookById(id);
     }
 
+    @GetMapping("/id/{idFromApi}")
+    public ResponseEntity<Book> getBookByApi(@PathVariable String idFromApi) {
+        return bookService.getBookByIdFromApi(idFromApi);
+    }
+
+
     @GetMapping("/all")
-    public List<Book> getAll(){
+    public List<Book> getAll() {
         return bookRepository.findAll();
     }
 
     @PostMapping("/add")
-    public ResponseEntity<String> addBook(@RequestBody Book book){
+    public ResponseEntity<String> addBook(@RequestBody Book book) {
         bookService.saveBookByBody(book);
         return ResponseEntity.ok("Book Successfully Saved");
     }
 
+    @GetMapping("/isPresent/{bookIdFromApi}")
+    public ResponseEntity<Boolean> isPresent(@PathVariable String bookIdFromApi) {
+        return bookService.isPresent(bookIdFromApi);
+    }
 
-
-
-
+    @DeleteMapping("/{id}")
+    public String deleteBook(@PathVariable Long id){
+         bookRepository.deleteById(id);
+         return "Book with id" + id + "deleted";
+    }
 
 }

@@ -6,7 +6,7 @@ import React from 'react';
 import Navbar from './Components/Navbar'; 
 import Meetings from './Pages/Meetings';
 import Ratings from './Pages/Ratings';
-import AtMeeting from './Pages/AtMeeting';
+
 
 function App() {
   return (
@@ -18,7 +18,7 @@ function App() {
 <Route exact path="/findbook" element={<Main/>} />
 <Route exact path="/members" element={<Members/>} />
 <Route exact path="/meetings" element={<Meetings/>} />
-<Route exact path="/atmeeting" element={<AtMeeting/>} />
+
 
 </Routes>
 </Router>

@@ -39,7 +39,7 @@ const Members=()=>{
 return(
     <>                      
     
-<div className="container">
+<div className="container-members">
                 {
                     <MemberCard user={userData}/>
 
