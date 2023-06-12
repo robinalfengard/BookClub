@@ -23,7 +23,7 @@ const Main=()=>{
         if(event.key==="Enter")
         {   
             //INSERT google api key where #GoogleKey is printed below
-     
+            axios.get()
             .then(res=>setData(res.data.items))
             .catch(err=>console.log(err))
         }
