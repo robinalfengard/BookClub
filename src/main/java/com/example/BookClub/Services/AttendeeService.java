@@ -14,12 +14,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 
 @Service
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:3000")
 public class AttendeeService {
+
 
     @Autowired
     UserRepository userRepository;
@@ -39,6 +41,14 @@ public class AttendeeService {
         Attendee newAttendee = new Attendee(meeting, user);
         attendeeRepository.save(newAttendee);
         return ResponseEntity.ok("Attendee saved successfully");
+
+    }
+
+
+
+    public ResponseEntity<List<Attendee>> findAllByMeetingId(String meetingId) {
+        Long meetingIdLong = Long.parseLong(meetingId);
+        return ResponseEntity.ok( attendeeRepository.findAllByMeetingId(meetingIdLong));
 
     }
 }

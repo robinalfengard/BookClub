@@ -24,7 +24,7 @@ public class MeetingController {
     }
 
     @GetMapping("/{bookIdFromApi}")
-    public ResponseEntity<String> getMeetingByBookIdFromApi(@PathVariable String bookIdFromApi){
+    public ResponseEntity<String> getMeetingIdByBookIdFromApi(@PathVariable String bookIdFromApi){
         return meetingService.getMeetingByBookIdFromApi(bookIdFromApi);
     }
 
@@ -39,6 +39,8 @@ public class MeetingController {
         meetingRepository.deleteById(id);
         return "Meeting with id" + id + "deleted";
     }
+
+
 
 
 }
