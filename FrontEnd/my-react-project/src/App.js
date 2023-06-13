@@ -1,11 +1,11 @@
-import Main from './Components/Main';
+import Main from './Pages/Main';
 import './Components/style.css';
 import Members from './Pages/Members';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import React from 'react';
 import Navbar from './Components/Navbar'; 
 import Meetings from './Pages/Meetings';
-import Ratings from './Pages/Ratings';
+
 
 
 function App() {

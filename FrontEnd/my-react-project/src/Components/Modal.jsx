@@ -16,14 +16,18 @@ const Modal = ({ show, item, onClose }) => {
     bookIdFromApi: "",
   });
 
-  const [host, setHost] = useState({
-    userIdForConstructor: book.userIdForConstructor,
-    meetingIdForConstructor: meeting,
+
+  const [attendee, setAttendee] = useState({
+    userIdForConstructor: "",
+    meetingIdForConstructor: "",
   });
 
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState("");
   const [isPresent, setIsPresent] = useState(false);
+  const [meetingId, setMeetingId] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessageBook, setSuccessMessageBook] = useState("");
 
   useEffect(() => {
     fetchUserData();
@@ -33,6 +37,7 @@ const Modal = ({ show, item, onClose }) => {
     if (book.idFromApi) {
       checkIfBookIsPresent(book.idFromApi);
       console.log(book.idFromApi);
+      
     }
   }, [book.idFromApi]);
 
@@ -49,6 +54,7 @@ const Modal = ({ show, item, onClose }) => {
   const handleClickAddBook = async () => {
     console.log(book);
     try {
+      setSuccessMessageBook("Book Added!");
       const isPresent = await checkIfBookIsPresent(book.idFromApi);
       if (isPresent) {
         console.log(isPresent)
@@ -78,20 +84,45 @@ const Modal = ({ show, item, onClose }) => {
       return false; // Return false if an error occurs while checking the book
     }
   };
+
+  const fetchMeetingId = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:8080/meeting/${book.idFromApi}`
+      );
+      const meetingIdValue = response.data;
+      setMeetingId(meetingIdValue);
+      setAttendee((prevAttendee) => ({
+        ...prevAttendee,
+        meetingIdForConstructor: meetingIdValue,
+      }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
   
 
   const handleClickAddMeeting = async () => {
-    console.log(meeting);
     try {
+      setSuccessMessage("Meeting Created!");
       const updatedMeeting = {
         ...meeting,
         bookIdFromApi: item.id, // Set the bookIdFromApi property to item.id
       };
-
+      console.log(meeting.bookIdFromApi);
+  
+      // Add the meeting and wait for it to be added successfully
       await axios.post("http://localhost:8080/meeting/add", updatedMeeting);
       console.log("Meeting added successfully");
-
-      await axios.post("http://localhost:8080/attendee/add", host);
+  
+      // Wait for a short delay to ensure the meeting is added to the server
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+  
+      // Fetch the meeting ID after the meeting is added
+      await fetchMeetingId();
+  
+      // Now that the meeting ID is available, post the attendee
+      await axios.post("http://localhost:8080/attendee/add", attendee);
     } catch (error) {
       console.log("Error adding meeting:", error);
       // Handle error if the meeting couldn't be added
@@ -99,7 +130,12 @@ const Modal = ({ show, item, onClose }) => {
   };
 
   const handleUserChange = (e) => {
-    setSelectedUser(e.target.value);
+    const selectedUserId = e.target.value;
+    setSelectedUser(selectedUserId);
+    setAttendee((prevAttendee) => ({
+      ...prevAttendee,
+      userIdForConstructor: selectedUserId,
+    }));
   };
 
   useEffect(() => {
@@ -155,6 +191,7 @@ const Modal = ({ show, item, onClose }) => {
     thumbnail ||
     "https://media.istockphoto.com/id/628925698/sv/vektor/pile-of-hardcover-books.jpg?s=612x612&w=0&k=20&c=GDniN4t95S7ArNnUK7RAPc446x2TPQFBx9F26vJrPls=";
 
+    console.log(attendee)
   return (
     <>
       <div className="overlay">
@@ -185,6 +222,9 @@ const Modal = ({ show, item, onClose }) => {
   <div className="bottom-book">
     <p>Who will host this Book Club Meeting?</p>
     <select name="host" id="host" onChange={handleUserChange}>
+    <option value="" disabled selected>
+                Choose member to add
+              </option>
       {users.map((user) => (
         <option key={user.id} value={user.id}>
           {user.name}
@@ -194,6 +234,7 @@ const Modal = ({ show, item, onClose }) => {
     <button className="bottom-button" onClick={handleClickAddBook}>
       Confirm Book
     </button>
+    {successMessageBook && <p>{successMessageBook}</p>}
     <p>On Which Date? (xxxx-xx-xx)</p>
     <input
       title="Date"
@@ -206,6 +247,7 @@ const Modal = ({ show, item, onClose }) => {
     <button className="bottom-button" onClick={handleClickAddMeeting}>
       Create Meeting
     </button>
+    {successMessage && <p>{successMessage}</p>}
   </div>
 )}
 

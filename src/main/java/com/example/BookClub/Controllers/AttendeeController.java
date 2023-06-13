@@ -28,6 +28,12 @@ public class AttendeeController {
         return attendeeService.findAllByMeetingId(meetingId);
     }
 
+    @DeleteMapping("/{id}")
+    public String deleteBook(@PathVariable Long id){
+        attendeeRepository.deleteById(id);
+        return "Attendee with id " + id + " deleted";
+    }
+
 
 
 
