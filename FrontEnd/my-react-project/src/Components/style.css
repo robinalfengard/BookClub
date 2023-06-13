@@ -254,7 +254,7 @@ margin: 10px;
 }
 .overlay-inner-add{
     background-color: rgb(234, 234, 234);
-    width: 50%;
+    width: 25%;
     padding: 1.5rem;
     position: relative;
     box-sizing: border-box;
@@ -353,6 +353,21 @@ margin: 10px;
     width: 200px;
     height: 250px;
 }
+.no-bullet {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  select{
+    margin-bottom: 10px;
+  }
+  .details p {
+    margin-bottom: 0px;
+  }
+  .details ul {
+    margin-top: 10px;
+  }
 
 
 
