@@ -16,6 +16,7 @@ const MeetingDetailsModal = ({ book, onClose }) => {
   const [meetingId, setMeetingId] = useState("");
   const [attendees, setAttendees] = useState([]);
   const [successMessage, setSuccessMessage] = useState("");
+ 
 
   const [attendee, setAttendee] = useState({
     userIdForConstructor: selectedUser,
