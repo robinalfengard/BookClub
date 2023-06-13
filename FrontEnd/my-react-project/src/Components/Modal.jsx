@@ -23,12 +23,9 @@ const Modal = ({ show, item, onClose }) => {
   const [successMessage, setSuccessMessage] = useState("");
   const [successMessageBook, setSuccessMessageBook] = useState("");
 
-  const { title, authors, pageCount, description, previewLink } =
-    item.volumeInfo;
-  let thumbnail = book.thumb;
-  thumbnail =
-    thumbnail ||
-    "https://media.istockphoto.com/id/628925698/sv/vektor/pile-of-hardcover-books.jpg?s=612x612&w=0&k=20&c=GDniN4t95S7ArNnUK7RAPc446x2TPQFBx9F26vJrPls=";
+
+    const { title, authors, pageCount, description, previewLink } = item && item.volumeInfo ? item.volumeInfo : {};
+    let thumbnail = book && book.thumb ? book.thumb : "https://media.istockphoto.com/id/628925698/sv/vektor/pile-of-hardcover-books.jpg?s=612x612&w=0&k=20&c=GDniN4t95S7ArNnUK7RAPc446x2TPQFBx9F26vJrPls=";
 
   useEffect(() => {
     if (book.idFromApi) {
@@ -36,6 +33,9 @@ const Modal = ({ show, item, onClose }) => {
       console.log(book.idFromApi);
     }
   }, [book.idFromApi]);
+
+
+
 
   // Method to get list of users
   const fetchUserData = async () => {
@@ -101,7 +101,7 @@ const Modal = ({ show, item, onClose }) => {
     }
   };
 
-  // Handle change of user
+  // Handle change of user 
   const handleUserChange = (e) => {
     const selectedUserId = e.target.value;
     setSelectedUser(selectedUserId);
@@ -145,7 +145,7 @@ const Modal = ({ show, item, onClose }) => {
     }
   }, [item]);
 
-  // Updates the userIdForConstructor state
+  // Updates the userIdForConstrucot
   useEffect(() => {
     setBook((prevBook) => ({
       ...prevBook,
@@ -227,4 +227,5 @@ const Modal = ({ show, item, onClose }) => {
     </>
   );
 };
+
 export default Modal;
